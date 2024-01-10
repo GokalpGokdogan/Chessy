@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 // import { Button } from "@material-ui/core";
 
-const LoginPage = () => {
+const RegisterPage = () => {
     
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -19,7 +19,7 @@ const LoginPage = () => {
                     </h1>
                     {<div className="bg-white-A700 flex flex-col w-[30%] m-[5%] md:gap-10 gap-8 justify-start p-4 md:p-5 rounded-lg shadow-bs text-left">
                         <strong className="text-4xl md:text-5xl text-indigo-500 font-semibold text-mont">
-                            Login
+                            Register
                         </strong>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="flex flex-col gap-6 md:gap-10 items-center justify-start mx-auto w-full">
@@ -63,4 +63,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default RegisterPage;
