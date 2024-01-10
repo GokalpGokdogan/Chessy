@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 // import { Button } from "@material-ui/core";
 
 const RegisterPage = () => {
@@ -54,6 +55,10 @@ const RegisterPage = () => {
                                     <strong className="text-2xl text-white-A700 font-medium">Log In</strong>
                                 </button>
                             </div>
+                            <div className="mt-[5%]">
+                                <Link className="" to="/login">Do you already have an account?</Link>
+                            </div>
+                            
                         </form>
                     </div>
                     }
