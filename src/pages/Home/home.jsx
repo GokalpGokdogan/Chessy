@@ -24,7 +24,38 @@ const HomePage = () => {
     };
 
 
-    
+    const importButton= <button className="rounded-lg bg-indigo-500" onClick={() => setModalOpen(true)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 200 200" fill="#382ad6">
+                                <g style={{mixBlendMode: "multiply"}} filter="url(#filter0_i_10_1057)">
+                                    <path d="M0 40C0 17.9086 17.9086 0 40 0H160C182.091 0 200 17.9086 200 40V160C200 182.091 182.091 200 160 200H40C17.9086 200 0 182.091 0 160V40Z" fill="#382ad6"/>
+                                </g>
+                                <g filter="url(#filter1_d_10_1057)">
+                                    <path d="M25 100H175M100 175V25" stroke="white" strokeWidth="10" strokeLinecap="round"/>
+                                </g>
+                                <defs>
+                                <filter id="filter0_i_10_1057" x="0" y="0" width="200" height="200" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                        <feOffset dy="4"/>
+                                        <feGaussianBlur stdDeviation="2"/>
+                                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                                        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_10_1057"/>
+                                    </filter>
+                                    <filter id="filter1_d_10_1057" x="14.5" y="18.5" width="171" height="171" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                        <feOffset dy="4"/>
+                                        <feGaussianBlur stdDeviation="2"/>
+                                        <feComposite in2="hardAlpha" operator="out"/>
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_10_1057"/>
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_10_1057" result="shape"/>
+                                    </filter>
+                                </defs>
+                            </svg>
+                        </button>;
     return (
         <>
             {/* <div className="flex flex-col font-montserratalternates items-center justify-start mx-auto w-full"> */}
