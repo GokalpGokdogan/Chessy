@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { ImageUploading } from 'react-images-uploading';
 import Modal from "../../components/modal";
-
+import ImageCropper from "../../components/imgCropper";
 const HomePage = () => {
     
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,47 +14,17 @@ const HomePage = () => {
     };
     const [modalOpen, setModalOpen] = useState(false);
 
-    const imgUrl = useRef(
-    "https://avatarfiles.alphacoders.com/161/161002.jpg"
+    const imgUrl = useRef(""
+    // "https://avatarfiles.alphacoders.com/161/161002.jpg"
     );
     
     const updateImg = (imgSrc) => {
     imgUrl.current = imgSrc;
+    console.log(imgUrl.current);
     };
 
 
-    const importButton= <button className="rounded-lg bg-indigo-500" onClick={() => setModalOpen(true)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 200 200" fill="#382ad6">
-                                <g style={{mixBlendMode: "multiply"}} filter="url(#filter0_i_10_1057)">
-                                    <path d="M0 40C0 17.9086 17.9086 0 40 0H160C182.091 0 200 17.9086 200 40V160C200 182.091 182.091 200 160 200H40C17.9086 200 0 182.091 0 160V40Z" fill="#382ad6"/>
-                                </g>
-                                <g filter="url(#filter1_d_10_1057)">
-                                    <path d="M25 100H175M100 175V25" stroke="white" stroke-width="10" stroke-linecap="round"/>
-                                </g>
-                                <defs>
-                                    <filter id="filter0_i_10_1057" x="0" y="0" width="200" height="200" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                                        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                                        <feOffset dy="4"/>
-                                        <feGaussianBlur stdDeviation="2"/>
-                                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                                        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_10_1057"/>
-                                    </filter>
-                                    <filter id="filter1_d_10_1057" x="14.5" y="18.5" width="171" height="171" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                                        <feOffset dy="4"/>
-                                        <feGaussianBlur stdDeviation="2"/>
-                                        <feComposite in2="hardAlpha" operator="out"/>
-                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_10_1057"/>
-                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_10_1057" result="shape"/>
-                                    </filter>
-                                </defs>
-                            </svg>
-                        </button>;
+    
     return (
         <>
             {/* <div className="flex flex-col font-montserratalternates items-center justify-start mx-auto w-full"> */}
@@ -64,22 +34,30 @@ const HomePage = () => {
                             Chessy
                         </h1>
                         {modalOpen ? (
-  <Modal updateImg={updateImg} closeModal={() => setModalOpen(false)} />
-) : (
-  <div className="flex flex-col mt-[5%] w-full justify-center items-center my-[10%] font-semibold">
-    
-      <div className="flex flex-col w-full justify-center items-center">
-    
-      <>
-        <h2 className="md:text-xl lg:text-2xl text-white-A700 m-[5%]">
-          Please add an image to analyze.
-        </h2>
-        {importButton}
-      </>
-    
-  </div>
-    </div>
-)}
+                            // <Modal updateImg={updateImg} closeModal={() => setModalOpen(false)} />
+                            <ImageCropper
+                                updateImg={updateImg}
+                                closeModal={() => setModalOpen(false)}  
+                            />
+                        ) : (imgUrl.current == "" ? (
+                            <div className="flex flex-col mt-[5%] w-full justify-center items-center my-[10%] font-semibold">
+                                
+                                <div className="flex flex-col w-full justify-center items-center">
+                                
+                                <>
+                                    <h2 className="md:text-xl lg:text-2xl text-white-A700 m-[5%]">
+                                    Please add an image to analyze.
+                                    </h2>
+                                    {importButton}
+                                </>
+                                
+                                </div>
+                            </div>) : (
+                                <div className="flex flex-col mt-[0%] h-full w-full justify-center items-center my-[10%] font-semibold">
+                                    <img onClick={()=>setModalOpen(true)} src={imgUrl.current} className="w-[50%] aspect-square rounded-lg shadow-bs" />
+                                </div>
+                            )
+                        )}
 
 
                     </div>
@@ -107,9 +85,9 @@ const HomePage = () => {
                                         <p className="text-xl md:text-2xl text-black-900 text-shadow-ts">
                                             Best Move
                                         </p>
-                                        <p className="p-2 border-2 border-gray-300 rounded-lg flex-row flex">
-                                            <div className={`bg-${outputColor} border border-gray-500 w-4 h-4 my-auto mr-2`}></div> e5
-                                        </p>
+                                        <div className="p-2 border-2 border-gray-300 rounded-lg flex-row flex">
+                                            <div className={`bg-${outputColor} border border-gray-500 w-4 h-4 my-auto mr-2`}></div> <p>e5</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="w-full flex flex-col mt-auto mb-[5%]">

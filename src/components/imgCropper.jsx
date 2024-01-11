@@ -60,7 +60,7 @@ const ImageCropper = ({ closeModal, updateImg }) => {
   return (
     <>
       <label className="block mb-3 w-fit">
-        <span className="sr-only">Choose profile photo</span>
+        <span className="sr-only">Choose board photo</span>
         <input
           type="file"
           accept="image/*"
