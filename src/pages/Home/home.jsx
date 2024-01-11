@@ -7,12 +7,13 @@ import ImageCropper from "../../components/imgCropper";
 const HomePage = () => {
     
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [outputColor, setOutputColor] = useState("black-900");
+    const [outputColor, setOutputColor] = useState('black-900');
     const onSubmit = (data) => {
-        if(outputColor == "black-900"){setOutputColor("white-A700");}else{setOutputColor("black-900");}
-        console.log(data);
+        if(outputColor == 'black-900'){setOutputColor('white-A700');}else{setOutputColor('black-900');}
+        console.log(data,outputColor);
     };
     const [modalOpen, setModalOpen] = useState(false);
+    const [imgHover, setImgHover] = useState(false);
 
     const imgUrl = useRef(""
     // "https://avatarfiles.alphacoders.com/161/161002.jpg"
@@ -66,10 +67,24 @@ const HomePage = () => {
                         </h1>
                         {modalOpen ? (
                             // <Modal updateImg={updateImg} closeModal={() => setModalOpen(false)} />
-                            <ImageCropper
-                                updateImg={updateImg}
-                                closeModal={() => setModalOpen(false)}  
-                            />
+                            <div className="flex flex-col mt-[5%] w-full justify-center items-center my-[10%] font-semibold">
+                                
+                                <div className="flex flex-col w-full justify-center items-center">
+                                
+                                <>
+                                    <h2 className="md:text-xl lg:text-2xl text-white-A700 m-[5%]">
+                                    Please add an image to analyze.
+                                    </h2>
+                                    <div className="flex flex-row justify-center items-center max-w-[50%] aspect-square">
+                                    <ImageCropper
+                                        updateImg={updateImg}
+                                        closeModal={(e) => {setModalOpen(e); console.log(e)}}  
+                                    />
+                                    </div>
+                                </>
+                                
+                                </div>
+                            </div>
                         ) : (imgUrl.current == "" ? (
                             <div className="flex flex-col mt-[5%] w-full justify-center items-center my-[10%] font-semibold">
                                 
@@ -79,14 +94,32 @@ const HomePage = () => {
                                     <h2 className="md:text-xl lg:text-2xl text-white-A700 m-[5%]">
                                     Please add an image to analyze.
                                     </h2>
-                                    {importButton}
+                                    <div className="flex flex-row justify-center items-center max-w-[50%] aspect-square">
+                                    <ImageCropper
+                                        updateImg={updateImg}
+                                        closeModal={(e) => {setModalOpen(e); console.log(e)}}  
+                                    />
+                                    </div>
                                 </>
                                 
                                 </div>
                             </div>) : (
-                                <div className="flex flex-col mt-[0%] h-full w-full justify-center items-center my-[10%] font-semibold">
-                                    <img onClick={()=>setModalOpen(true)} src={imgUrl.current} className="w-[50%] aspect-square rounded-lg shadow-bs" />
+                                <div onClick={() => setModalOpen(true)} className="flex flex-col mt-[0%] h-full w-full justify-center items-center my-[10%] font-semibold relative group">
+                                
+                                    <div className="flex flex-col w-full justify-center items-center transition duration-500 ease-in-out transform opacity-100 hover:opacity-30">
+                                        <img
+                                            onMouseEnter={() => setImgHover(true)}
+                                            onMouseLeave={() => setImgHover(false)}
+                                            src={imgUrl.current}
+                                            className="w-[50%] aspect-square rounded-lg shadow-bs "
+                                        />
+                                        
+                                    </div>
+                                    <p className={`flex mt-[5%] items-center justify-center text-2xl text-white-A700 ${imgHover?`opacity-100`:`opacity-0`} transition duration-500 ease-in-out`}>
+                                            Delete Image?
+                                    </p>
                                 </div>
+                              
                             )
                         )}
 
@@ -102,15 +135,15 @@ const HomePage = () => {
                                 <div className="flex flex-col gap-6 md:gap-8 items-center justify-start w-full">
                                     <div className="flex flex-col gap-3 md:gap-5 justify-start w-full">
                                         <p className="text-xl md:text-2xl text-black-900 text-shadow-ts">
-                                            Chess Moves in SAN
+                                            Chess Moves in FEN
                                         </p>
                                         <input 
                                             type="text" 
                                             placeholder="1.e4 e5 2. Nf3 Nc6 3. Bc4 O-O 4. ..." 
-                                            {...register("SAN", { required: false })} 
+                                            {...register("FEN", { required: false })} 
                                             className="p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                                         />
-                                        {errors.SAN && <span>This field is required</span>}
+                                        {errors.FEN && <span>This field is required</span>}
                                     </div>
                                     <div className="flex flex-col gap-3 md:gap-5 justify-start w-full">
                                         <p className="text-xl md:text-2xl text-black-900 text-shadow-ts">
