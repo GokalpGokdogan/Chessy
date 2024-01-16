@@ -1,6 +1,15 @@
 const User = require('../models/userModel');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
+
+//create a token
+
+const createToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: 3 * 24 * 60 * 60 //3 days
+    });
+}
 
 //get all users
 
@@ -106,5 +115,34 @@ const deleteUsers = async (req, res) => {
     }
 }
 
+//sign up a user
+
+
+const signup = async (req, res) => {
+    const {mail, password} = req.body;
+    try{
+        const user = await User.signup(mail, password);
+        const token = createToken(user._id);
+        res.status(200).json({user, token});
+    
+    } catch(err){
+        res.status(400).json({error: err.message});
+    }
+}
+
+//login a user
+
+const login = async (req, res) => {
+    const {mail, password} = req.body;
+    try{
+        const user = await User.login(mail, password);
+        const token = createToken(user._id);
+        res.status(200).json({user, token});
+    
+    } catch(err){
+        res.status(400).json({error: err.message});
+    }
+}
+
 //export functions
-module.exports = { createUser, getUsers, getUser, deleteUser, updateUser, deleteUsers };
+module.exports = { createUser, getUsers, getUser, deleteUser, updateUser, deleteUsers, signup, login };
