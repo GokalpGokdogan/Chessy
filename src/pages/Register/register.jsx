@@ -6,9 +6,32 @@ import { Link } from "react-router-dom";
 const RegisterPage = () => {
     
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [error, setError] = useState(null);
 
-    const onSubmit = (data) => {
-      console.log(data);
+    const onSubmit = async(data) => {
+        data.preventDefault();
+        console.log(data);
+
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const json = await response.json();
+
+        if(!response.ok) {
+            setError(json.error)
+            console.log(json);
+            return;
+        }
+        if(response.ok) {
+            setError(null);
+            console.log('New User Added: ',json);
+            return;
+        }
     };
 
     return (
