@@ -1,14 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/UseLogin";
 
 const LoginPage = () => {
     
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register:formRegister, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = (data) => {
-        data.preventDefault();
+    const {login, error, isLoading} = useLogin();
+    const onSubmit =  async(data) => {
+        // data.preventDefault();
       console.log(data);
+      await login(data.mail, data.password);
     };
 
     return (
@@ -32,7 +35,7 @@ const LoginPage = () => {
                                         <input 
                                             type="text" 
                                             placeholder="Mail" 
-                                            {...register("mail", { required: true })} 
+                                            {...formRegister("mail", { required: true })} 
                                             className="p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                                         />
                                         {errors.mail && <span>This field is required</span>}
@@ -44,21 +47,26 @@ const LoginPage = () => {
                                         <input 
                                             type="password" 
                                             placeholder="Password" 
-                                            {...register("password", { required: true })} 
+                                            {...formRegister("password", { required: true })} 
                                             className="p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                                         />
                                         {errors.password && <span>This field is required</span>}
                                     </div>
                                 </div>
-                                <button type="submit" className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full">
-                                    
-                                    <strong className="text-2xl text-white-A700 font-medium">Log In</strong>
-                                </button>
+                                <div className="flex flex-col w-full">
+                                    <button disabled={isLoading} type="submit" className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full">
+                                        
+                                        <strong className="text-2xl text-white-A700 font-medium">Log In</strong>
+                                    </button>
+                                    <div className="flex flex-col justify-start w-full font-regular text-orange h-auto text-left m-2 mr-auto">
+                                        {error && <span className="">{error}</span>}
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div className="mt-[5%]">
-                                    <Link to="/register">Don't have an account?</Link>                            
-                                </div>
+                            <div className="mt-[5%] flex m-2 mr-auto">
+                                <Link to="/register">Don't have an account?</Link>                            
+                            </div>
                         </form>
                     </div>
                     }

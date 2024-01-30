@@ -1,37 +1,20 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-// import { Button } from "@material-ui/core";
+import { useRegister } from "../../hooks/UseRegister";
 
 const RegisterPage = () => {
     
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [error, setError] = useState(null);
+    const { register: formRegister, handleSubmit, formState: { errors } } = useForm();
+    //const [error, setError] = useState(null);
+    const {register: userRegister, error, isLoading} = useRegister();
 
     const onSubmit = async(data) => {
-        data.preventDefault();
+        // data.preventDefault();
         console.log(data);
 
-        const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
+        await userRegister(data.mail, data.password);
 
-        const json = await response.json();
-
-        if(!response.ok) {
-            setError(json.error)
-            console.log(json);
-            return;
-        }
-        if(response.ok) {
-            setError(null);
-            console.log('New User Added: ',json);
-            return;
-        }
     };
 
     return (
@@ -55,7 +38,7 @@ const RegisterPage = () => {
                                         <input 
                                             type="text" 
                                             placeholder="Mail" 
-                                            {...register("mail", { required: true })} 
+                                            {...formRegister("mail", { required: true })} 
                                             className="p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                                         />
                                         {errors.mail && <span>This field is required</span>}
@@ -67,18 +50,23 @@ const RegisterPage = () => {
                                         <input 
                                             type="password" 
                                             placeholder="Password" 
-                                            {...register("password", { required: true })} 
+                                            {...formRegister("password", { required: true })} 
                                             className="p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                                         />
                                         {errors.password && <span>This field is required</span>}
                                     </div>
                                 </div>
-                                <button type="submit" className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full">
-                                    
-                                    <strong className="text-2xl text-white-A700 font-medium">Log In</strong>
-                                </button>
+                                <div className="flex flex-col w-full">
+                                    <button disabled={isLoading} type="submit" className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full">
+                                        
+                                        <strong className="text-2xl text-white-A700 font-medium">Log In</strong>
+                                    </button>
+                                    <div className="flex flex-col justify-start w-full font-regular text-orange h-auto text-left m-2 mr-auto">
+                                        {error && <span className="">{error}</span>}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="mt-[5%]">
+                            <div className="flex mt-[5%] m-2 mr-auto">
                                 <Link className="" to="/login">Do you already have an account?</Link>
                             </div>
                             

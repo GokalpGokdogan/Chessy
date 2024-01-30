@@ -20,7 +20,7 @@ const userSchema = new Schema({
     },
 },{timestamps:true});
 
-userSchema.statics.signup = async function(mail, password){
+userSchema.statics.register = async function(mail, password){
     
     //validate mail and password
     if( !mail || !password){

@@ -118,10 +118,10 @@ const deleteUsers = async (req, res) => {
 //sign up a user
 
 
-const signup = async (req, res) => {
+const register = async (req, res) => {
     const {mail, password} = req.body;
     try{
-        const user = await User.signup(mail, password);
+        const user = await User.register(mail, password);
         const token = createToken(user._id);
         res.status(200).json({user, token});
     
@@ -145,4 +145,4 @@ const login = async (req, res) => {
 }
 
 //export functions
-module.exports = { createUser, getUsers, getUser, deleteUser, updateUser, deleteUsers, signup, login };
+module.exports = { createUser, getUsers, getUser, deleteUser, updateUser, deleteUsers, register, login };
