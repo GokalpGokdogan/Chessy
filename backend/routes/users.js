@@ -9,6 +9,10 @@ const { createUser,
         register,
         login } = require('../controllers/userController');
 
+//const requireAuth = require('../middleware/requireAuth');
+
+// router.use(requireAuth);
+
 router.get('/', getUsers);
 
 router.get('/:id', getUser);

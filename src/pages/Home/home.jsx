@@ -1,13 +1,12 @@
 import React, {useState, useRef} from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { ImageUploading } from 'react-images-uploading';
-import Modal from "../../components/modal";
 import ImageCropper from "../../components/imgCropper";
+import { useLogout } from "../../hooks/useLogout";
 const HomePage = () => {
     
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [outputColor, setOutputColor] = useState('black-900');
+    const {logout, isLoadingLogout} = useLogout();
     const onSubmit = (data) => {
         if(outputColor == 'black-900'){setOutputColor('white-A700');}else{setOutputColor('black-900');}
         console.log(data,outputColor);
@@ -22,6 +21,10 @@ const HomePage = () => {
     const updateImg = (imgSrc) => {
     imgUrl.current = imgSrc;
     console.log(imgUrl.current);
+    };
+    const handleLogout = () => {
+        logout()
+        console.log("logout");
     };
 
 
@@ -127,9 +130,15 @@ const HomePage = () => {
                     </div>
                     
                     {<div className="bg-white-A700 flex flex-col w-[50%] mr-0 ml-auto md:gap-10 gap-8 justify-start p-4 md:p-5 rounded-lg shadow-bs text-left">
+                        <div className="flex flex-row justify-end">
                         <strong className="text-4xl md:text-5xl text-indigo-500 font-semibold text-mont mt-[3%]">
                             Moves
                         </strong>
+                        <button className="rounded-lg bg-indigo-500 ml-auto text-white-A700 font-medium" onClick={handleLogout}>
+                             
+                            Logout
+                        </button>
+                        </div>
                         <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
                             <div className="flex flex-col gap-6 md:gap-10 items-center justify-start mx-auto w-full h-full">
                                 <div className="flex flex-col gap-6 md:gap-8 items-center justify-start w-full">

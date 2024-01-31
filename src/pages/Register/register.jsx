@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useRegister } from "../../hooks/UseRegister";
+import { useRegister } from "../../hooks/useRegister";
 
 const RegisterPage = () => {
     
