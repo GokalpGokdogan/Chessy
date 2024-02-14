@@ -1,19 +1,23 @@
 import React, {useState, useRef} from "react";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 // import ImageCropper from "../../components/imgCropper";
 import { useLogout } from "../../hooks/useLogout";
 import ChessBoard from "../../components/chessBoard";
 import { Chess } from "chess.js";
+import { useAI } from "../../hooks/useAI";
+// import AiResponse from "../../components/aiResponse";
+// import EngineView from "../../components/engineView";
 
 const HomePage = () => {
     
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [outputColor, setOutputColor] = useState('#ffffff');
+    // const { register, handleSubmit, formState: { errors } } = useForm();
+    // const [outputColor, setOutputColor] = useState('#ffffff');
     const {logout, isLoadingLogout} = useLogout();
-    const onSubmit = (data) => {
-        if(game.turn()=='w'){setOutputColor('#ffffff');}else{setOutputColor('#000000');}
-        console.log(data,outputColor);
-    };
+    const {getAiResponse} = useAI();
+    // const onSubmit = (data) => {
+    //     if(game.turn()=='w'){setOutputColor('#ffffff');}else{setOutputColor('#000000');}
+    //     console.log(data,outputColor);
+    // };
     // const [modalOpen, setModalOpen] = useState(false);
     // const [imgHover, setImgHover] = useState(false);
 
@@ -36,15 +40,18 @@ const HomePage = () => {
     const [game, setGame] = useState(new Chess());
     const [pgn, setPgn] = useState('');
     const [moveError, setMoveError] = useState(false);
+    const [aiResponse, setAiResponse] = useState('Waiting for response...');
+    const [bestMove, setBestMove] = useState('Not yet calculated...');
+    const [explanation, setExplanation] = useState('Not yet calculated...');
 
     const getMovesAsFENs = (chessObj) => {
-        console.log('chess obj: ',chessObj, typeof chessObj);
+        // console.log('chess obj: ',chessObj, typeof chessObj);
         // return
         var moves = chessObj//.filter((a) => a != '')//.history();
         const newGame = new Chess();
         
         for (var i = 0; i < moves.length; i++) {
-            console.log(moves[i]);
+            // console.log(moves[i]);
             if(moves[i]==''){
                 continue;
             }
@@ -65,16 +72,16 @@ const HomePage = () => {
 
     const handlePgnChanges = (e) => {
         
-        console.log("test #1")
+        // console.log("test #1")
         setPgn(e.target.value)   
 
-        console.log("test #2")
+        // console.log("test #2")
 
         let newGame = getMovesAsFENs(e.target.value.split(" ").filter((move) => {if(move.includes(".") || move.length == 1){return false;}else{return true;}}));
-        console.log("test #3")
+        // console.log("test #3")
         try{
             setGame(newGame);
-            console.log("test #4")
+            // console.log("test #4")
         }
         catch(e){
             console.log(e);
@@ -82,105 +89,38 @@ const HomePage = () => {
         
     }
 
-    // const importButton= <button className="rounded-lg bg-indigo-500" onClick={() => setModalOpen(true)}>
-    //                         <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 200 200" fill="#382ad6">
-    //                             <g style={{mixBlendMode: "multiply"}} filter="url(#filter0_i_10_1057)">
-    //                                 <path d="M0 40C0 17.9086 17.9086 0 40 0H160C182.091 0 200 17.9086 200 40V160C200 182.091 182.091 200 160 200H40C17.9086 200 0 182.091 0 160V40Z" fill="#382ad6"/>
-    //                             </g>
-    //                             <g filter="url(#filter1_d_10_1057)">
-    //                                 <path d="M25 100H175M100 175V25" stroke="white" strokeWidth="10" strokeLinecap="round"/>
-    //                             </g>
-    //                             <defs>
-    //                             <filter id="filter0_i_10_1057" x="0" y="0" width="200" height="200" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-    //                                     <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-    //                                     <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-    //                                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-    //                                     <feOffset dy="4"/>
-    //                                     <feGaussianBlur stdDeviation="2"/>
-    //                                     <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-    //                                     <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-    //                                     <feBlend mode="normal" in2="shape" result="effect1_innerShadow_10_1057"/>
-    //                                 </filter>
-    //                                 <filter id="filter1_d_10_1057" x="14.5" y="18.5" width="171" height="171" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-    //                                     <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-    //                                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-    //                                     <feOffset dy="4"/>
-    //                                     <feGaussianBlur stdDeviation="2"/>
-    //                                     <feComposite in2="hardAlpha" operator="out"/>
-    //                                     <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-    //                                     <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_10_1057"/>
-    //                                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_10_1057" result="shape"/>
-    //                                 </filter>
-    //                             </defs>
-    //                         </svg>
-    //                     </button>;
+    const askAi = async () => {
+        console.log(game.fen());
+        // console.log("test #5")
+        const response = await getAiResponse({fen: game.fen()});
+        // console.log("test #6")
+
+        console.log('Response: ', response);
+        const json = JSON.parse(response);
+
+        const best_move = json.best_move;
+        const explanationAi = json.explanation;
+        
+        // console.log('Best move: ', best_move);
+        // console.log('Explanation: ', explanationAi);
+
+        setBestMove(best_move);
+        setExplanation(explanationAi);
+        setAiResponse(response);
+    }
+
+    
     return (
         <>
-            {/* <div className="flex flex-col font-montserratalternates items-center justify-start mx-auto w-full"> */}
                 <div className="bg-indigo-500 flex flex-row w-screen h-screen overflow-hidden">
                     <div className="flex flex-col mt-[3%] mx-[3%] w-[50%]">
                         <h1 className="md:text-3xl lg:text-5xl text-white-A700 text-left font-bold">
                             Chessy
                         </h1>
-                        {/* {modalOpen ? (
-                            // <Modal updateImg={updateImg} closeModal={() => setModalOpen(false)} />
-                            <div className="flex flex-col mt-[5%] w-full justify-center items-center my-[10%] font-semibold">
-                                
-                                <div className="flex flex-col w-full justify-center items-center">
-                                
-                                <>
-                                    <h2 className="md:text-xl lg:text-2xl text-white-A700 m-[5%]">
-                                    Please add an image to analyze.
-                                    </h2>
-                                    <div className="flex flex-row justify-center items-center max-w-[50%] aspect-square">
-                                    <ImageCropper
-                                        updateImg={updateImg}
-                                        closeModal={(e) => {setModalOpen(e); console.log(e)}}  
-                                    />
-                                    </div>
-                                </>
-                                
-                                </div>
-                            </div>
-                        ) : (imgUrl.current == "" ? (
-                            <div className="flex flex-col mt-[5%] w-full justify-center items-center my-[10%] font-semibold">
-                                
-                                <div className="flex flex-col w-full justify-center items-center">
-                                
-                                <>
-                                    <h2 className="md:text-xl lg:text-2xl text-white-A700 m-[5%]">
-                                    Please add an image to analyze.
-                                    </h2>
-                                    <div className="flex flex-row justify-center items-center max-w-[50%] aspect-square">
-                                    <ImageCropper
-                                        updateImg={updateImg}
-                                        closeModal={(e) => {setModalOpen(e); console.log(e)}}  
-                                    />
-                                    </div>
-                                </>
-                                
-                                </div>
-                            </div>) : (
-                                <div onClick={() => setModalOpen(true)} className="flex flex-col mt-[0%] h-full w-full justify-center items-center my-[10%] font-semibold relative group">
-                                
-                                    <div className="flex flex-col w-full justify-center items-center transition duration-500 ease-in-out transform opacity-100 hover:opacity-30">
-                                        <img
-                                            onMouseEnter={() => setImgHover(true)}
-                                            onMouseLeave={() => setImgHover(false)}
-                                            src={imgUrl.current}
-                                            className="w-[50%] aspect-square rounded-lg shadow-bs "
-                                        />
-                                        
-                                    </div>
-                                    <p className={`flex mt-[5%] items-center justify-center text-2xl text-white-A700 ${imgHover?`opacity-100`:`opacity-0`} transition duration-500 ease-in-out`}>
-                                            Delete Image?
-                                    </p>
-                                </div>
-                              
-                            )
-                        )} */}
+                        
                         {!moveError && (<div className="flex flex-col mt-[5%] md:w-full lg:w-5/6 justify-center items-center my-10 font-semibold mx-auto">
                             <ChessBoard game={game} setGame={setGame} pgn={pgn} setPgn={setPgn} />
+                            {/*<EngineView game={game} setGame={setGame} pgn={pgn} setPgn={setPgn} />*/}
                         </div>)}
                         {moveError && (<div className="flex flex-col mt-[5%] h-full md:w-full lg:w-5/6 justify-center items-center mb-[50%] font-semibold mx-auto">
                             <p className="text-3xl md:text-2xl text-black-900 text-shadow-ts text-white-A700">
@@ -204,7 +144,8 @@ const HomePage = () => {
                             Logout
                         </button>
                         </div>
-                        <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="flex flex-col h-full">
+                        {/* <form className="h-full" onSubmit={handleSubmit(onSubmit)}> */}
                             <div className="flex flex-col gap-6 md:gap-10 items-center justify-start mx-auto w-full h-full">
                                 <div className="flex flex-col gap-6 md:gap-8 items-center justify-start w-full">
                                     <div className="flex flex-col gap-3 md:gap-5 justify-start w-full">
@@ -215,32 +156,42 @@ const HomePage = () => {
                                             type="text" 
                                             placeholder="1.e4 e5 2. Nf3 Nc6 3. Bc4 O-O 4. ..." 
                                             value={pgn}
-                                            {...register("PGN", { required: false })} 
+                                            // {...register("PGN", { required: false })} 
                                             className="p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                                             onChange={handlePgnChanges}
                                         />
-                                        {errors.PGN && <span>This field is required</span>}
                                     </div>
                                     <div className="flex flex-col gap-3 md:gap-5 justify-start w-full">
                                         <p className="text-xl md:text-2xl text-black-900 text-shadow-ts">
                                             Best Move
                                         </p>
                                         <div className="p-2 border-2 border-gray-300 rounded-lg flex-row flex">
-                                            <div style={{backgroundColor: outputColor}} className="border border-gray-500 w-4 h-4 my-auto mr-2"></div> <p>e5</p>
+                                            <p>{bestMove}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-3 md:gap-5 justify-start w-full mb-[5%]">
+                                        <p className="text-xl md:text-2xl text-black-900 text-shadow-ts">
+                                            Explaination
+                                        </p>
+                                        <div className="p-2 border-2 border-gray-300 rounded-lg flex-row flex">
+                                            <p>{explanation}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-full flex flex-col mt-auto mb-[5%]">
-                                    <button type="submit" className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0">  
-                                        <strong className="text-2xl text-white-A700 font-medium">Submit {outputColor} </strong>
+                                    {/* <AiResponse fen={game.fen()} /> */}
+                                    
+                                    <button type="submit" onClick={askAi} className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0">  
+                                        <strong className="text-2xl text-white-A700 font-medium">Submit {/*outputColor*/} </strong>
                                     </button>
+                                    
                                 </div>
                             </div>
-                        </form>
+                        {/* </form> */}
+                        </div>
                     </div>
                     }
                 </div> 
-            {/* </div> */}
         </>
     );
 };
