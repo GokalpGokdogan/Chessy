@@ -20,11 +20,11 @@ const RegisterPage = () => {
     return (
         <>
             {/* <div className="flex flex-col font-montserratalternates items-center justify-start mx-auto w-full"> */}
-                <div className="bg-indigo-500 flex w-screen h-screen overflow-hidden">
+            <div className="bg-indigo-500 flex w-screen sm:flex-row flex-col h-screen overflow-hidden">
                     <h1 className="mt-[5%] mx-[10%] md:text-5xl lg:text-8xl text-white-A700 font-semibold">
                         Chessy
                     </h1>
-                    {<div className="bg-white-A700 flex flex-col w-[30%] m-[5%] md:gap-10 gap-8 justify-start p-4 md:p-5 rounded-lg shadow-bs text-left">
+                    {<div className="bg-white-A700 flex flex-col w-[80%] sm:w-[30%] sm:m-[5%] m-auto md:gap-10 gap-8 justify-start p-4 md:p-5 rounded-lg shadow-bs text-left">
                         <strong className="text-4xl md:text-5xl text-indigo-500 font-semibold text-mont">
                             Register
                         </strong>
