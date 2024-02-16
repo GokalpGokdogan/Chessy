@@ -20,6 +20,7 @@ const HomePage = () => {
     const [explanation, setExplanation] = useState('Not yet calculated...');
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+    const [boardOn, setBoardOn] = useState(false);
 
     const handleLogout = () => {
         logout()
@@ -61,6 +62,10 @@ const HomePage = () => {
         }
     }
 
+    const toBoard = () => {
+        setBoardOn(!boardOn);
+    }
+
     const askAi = async () => {
         console.log(game.fen());
         const response = await getAiResponse({fen: game.fen()});
@@ -73,6 +78,10 @@ const HomePage = () => {
 
         setBestMove(best_move);
         setExplanation(explanationAi);
+
+        if(windowWidth < 640 && boardOn){
+            setBoardOn(false)
+        }
     }
 
     useEffect(() => {
@@ -158,8 +167,8 @@ const HomePage = () => {
                                 <div className="w-full flex flex-col mt-auto mb-[5%]">
                                     {/* <AiResponse fen={game.fen()} /> */}
                                     
-                                    <button type="submit" onClick={askAi} className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0">  
-                                        <strong className="text-2xl text-white-A700 font-medium">Submit {/*outputColor*/} </strong>
+                                    <button type="submit" onClick={askAi} className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0 text-white-A700 transition-colors duration-250 hover:text-indigo-500 hover:bg-white-A700">  
+                                        <strong className="text-2xl font-medium">Submit {/*outputColor*/} </strong>
                                     </button>
                                     
                                 </div>
@@ -169,15 +178,27 @@ const HomePage = () => {
                     </div>
                     }
                 </div> ) : (
-
-                    // Mobile View
-                    <div className="bg-indigo-500 flex flex-col w-screen h-screen overflow-hidden">
-                    <div className="flex flex-col mt-[3%] mx-[3%] w-[50%] h-auto">
-                        <h1 className="md:text-3xl lg:text-5xl text-white-A700 text-left font-bold">
-                            Chessy
-                        </h1>
+                    <>
+                    {
+                        boardOn ? ( <> 
                         
-                        {/* {!moveError && (<div className="flex flex-col mt-[5%] md:w-full lg:w-5/6 justify-center items-center my-10 font-semibold mx-auto">
+                        <div className="bg-indigo-500 flex flex-col w-screen h-screen overflow-hidden">
+                    <div className="flex flex-col mt-[3%] mx-[3%] w-[90%] h-full mx-auto">
+                        
+                        <div className="flex flex-row items-center">
+                            <h1 className="text-4xl text-white-A700 text-left font-bold">
+                                Chessy
+                            </h1>
+                            
+                            <button 
+                                className="mr-[0%] bg-white-A700 rounded-lg ml-auto text-indigo-500 font-medium text-sm transition-colors duration-250 hover:bg-indigo-500 hover:text-white-A700" 
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+
+                        </div>
+                        {!moveError && (<div className="flex flex-col mt-[5%] w-full justify-center items-center my-10 font-semibold mx-auto">
                             <ChessBoard game={game} setGame={setGame} pgn={pgn} setPgn={setPgn} />
                             </div>)}
                         {moveError && (<div className="flex flex-col mt-[5%] h-full md:w-full lg:w-5/6 justify-center items-center mb-[50%] font-semibold mx-auto">
@@ -185,23 +206,108 @@ const HomePage = () => {
                                 Invalid Move
                             </p>
                             </div>)
-                        } */}
+                        }
+
+                    </div>
+                    
+                    {<div className="bg-white-A700 flex flex-col w-[90%] mb-[3%] mt-auto h-auto mx-auto md:gap-5 gap-4 justify-start p-4 md:p-5 rounded-lg shadow-bs text-left">
+                        <div className="flex flex-row justify-between">
+                            <strong className="text-2xl md:text-2xl text-indigo-500 font-semibold text-mont mt-[3%]">
+                                Moves
+                            </strong>
+                            <div className="flex flex-row justify-end">
+                                <button className="flex p-[5%] transition-colors duration-250 rounded-lg bg-indigo-500 ml-auto text-white-A700 font-medium text-sm active:bg-white-A700 active:text-indigo-500" 
+                                    onClick={toBoard}>
+                                        Go To Chessboard
+                                </button>    
+                            </div>                 
+                        </div>
+                        <div className="flex flex-col h-full">
+                        {/* <form className="h-full" onSubmit={handleSubmit(onSubmit)}> */}
+                            {/* <div className="flex flex-col gap-3 md:gap-5 items-center justify-start mx-auto w-full h-full">
+                                <div className="flex flex-col  items-center justify-start w-full"> */}
+                                    {/* <div className="flex flex-col  justify-start w-full">
+                                        <p className="text-md md:text-md text-black-900 text-shadow-ts" style={{ fontSize: '3vh', minFontSize: '16px', maxFontSize: '36px' }}>
+                                            Chess Moves in PGN
+                                        </p>
+                                        <input 
+                                            type="text" 
+                                            placeholder="1.e4 e5 2. Nf3 Nc6 3. Bc4 O-O 4. ..." 
+                                            value={pgn}
+                                            // {...register("PGN", { required: false })} 
+                                            className="p-2 border-2 border-gray-300 rounded-sm focus:outline-none focus:border-indigo-500"
+                                            onChange={handlePgnChanges}
+                                            style={{ fontSize: '2vh', minFontSize: '16px', maxFontSize: '36px' }}
+                                        />
+                                    </div> */}
+                                    {/* <div className="flex flex-col  md:gap-5 justify-start w-full">
+                                        <p className="text-md md:text-md text-black-900 text-shadow-ts" style={{ fontSize: '3vh', minFontSize: '16px', maxFontSize: '36px' }}>
+                                            Best Move
+                                        </p>
+                                        <div className="p-2 border-2 border-gray-300 rounded-sm flex-row flex" style={{ fontSize: '2vh', minFontSize: '16px', maxFontSize: '36px' }}>
+                                            <p>{bestMove}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col  md:gap-5 justify-start w-full">
+                                        <p className="text-md md:text-md text-black-900 text-shadow-ts" style={{ fontSize: '3vh', minFontSize: '16px', maxFontSize: '36px' }}>
+                                            Explaination
+                                        </p>
+                                        <div className="p-2 border-2 border-gray-300 rounded-lg flex-row flex text-sm" style={{minHeight: '7.5em', maxHeight: '20em', fontSize: '2vh', minFontSize: '16px', maxFontSize: '36px'}}>
+                                            <p>{explanation}</p>
+                                        </div>
+                                    </div>
+                                </div> */}
+                                <div className="w-full flex flex-col mt-auto mb-[5%]">
+                                    {/* <AiResponse fen={game.fen()} /> */}
+                                    
+                                    <button type="submit" onClick={askAi} className="bg-indigo-500 flex flex-col h-auto text-white-A700 items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0 transition-colors duration-250 active:bg-white-A700 active:text-indigo-500">  
+                                        <strong className="text-2xl font-medium">Submit {/*outputColor*/} </strong>
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                        {/* </form> */}
+                        </div>
+                    // </div>
+                    }
+                </div>
+                        
+                        </>):(
+                    // Mobile View
+                    <div className="bg-indigo-500 flex flex-col w-screen h-screen overflow-hidden">
+                    <div className="flex flex-col mt-[3%] mx-[3%] w-[90%] h-auto mx-auto">
+                        
+                        <div className="flex flex-row items-center">
+                            <h1 className="text-4xl text-white-A700 text-left font-bold">
+                                Chessy
+                            </h1>
+                            
+                            <button 
+                                className="mr-[0%] bg-white-A700 transition-colors duration-250 rounded-lg ml-auto text-indigo-500 font-medium text-sm hover:bg-indigo-500 hover:text-white-A700" 
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+
+                        </div>
+                        
 
                     </div>
                     
                     {<div className="bg-white-A700 flex flex-col w-[90%] mb-[3%] mt-[5%] h-full mx-auto md:gap-5 gap-4 justify-start p-4 md:p-5 rounded-lg shadow-bs text-left">
-                        <div className="flex flex-row justify-end">
-                        <strong className="text-4xl md:text-5xl text-indigo-500 font-semibold text-mont mt-[3%]">
-                            Moves
-                        </strong>
                         
-                        <button 
-                            className="transition-colors duration-250 rounded-lg bg-indigo-500 ml-auto text-white-A700 font-medium text-lg hover:bg-white-A700 hover:text-indigo-500" 
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </button>
+                        <div className="flex flex-row justify-between">
+                            <strong className="text-2xl md:text-2xl text-indigo-500 font-semibold text-mont mt-[3%]">
+                                Moves
+                            </strong>
+                            <div className="flex flex-row justify-end">
+                                <button className="flex p-[5%] transition-colors duration-250 rounded-lg bg-indigo-500 ml-auto text-white-A700 font-medium text-sm active:bg-white-A700 active:text-indigo-500" 
+                                    onClick={toBoard}>
+                                        Go To Chessboard
+                                </button>    
+                            </div>                  
                         </div>
+                        
                         <div className="flex flex-col h-full">
                         {/* <form className="h-full" onSubmit={handleSubmit(onSubmit)}> */}
                             <div className="flex flex-col gap-3 md:gap-5 items-center justify-start mx-auto w-full h-full">
@@ -240,8 +346,8 @@ const HomePage = () => {
                                 <div className="w-full flex flex-col mt-auto mb-[5%]">
                                     {/* <AiResponse fen={game.fen()} /> */}
                                     
-                                    <button type="submit" onClick={askAi} className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0">  
-                                        <strong className="text-2xl text-white-A700 font-medium">Submit {/*outputColor*/} </strong>
+                                    <button type="submit" onClick={askAi} className="bg-indigo-500 flex flex-col h-auto items-center justify-center rounded-lg shadow-bs1 w-full mt-auto mb-0 transition-colors duration-250 text-white-A700 active:bg-white-A700 active:text-indigo-500">  
+                                        <strong className="text-2xl font-medium">Submit {/*outputColor*/} </strong>
                                     </button>
                                     
                                 </div>
@@ -250,7 +356,9 @@ const HomePage = () => {
                         </div>
                     </div>
                     }
-                </div> 
+                </div>) 
+                }
+                </>
                 )}
         </>
     );

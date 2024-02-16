@@ -9,7 +9,8 @@ export const useAI = () => {
         // console.log('FEN: ', fen);
         let promptBody = "Given the FEN position " +
                         fen + 
-                        ", explain the best move. Provide a brief and informative explanation of the strategic advantages it offers.";
+                        ", explain the best move. Provide a brief and informative explanation of the strategic advantages it offers."+
+                        "Check your answer for accuracy by consulting a chess engine.";
 
 
         // console.log('Prompt: ', promptBody);
