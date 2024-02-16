@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
+import {jwtDecode} from 'jwt-decode';
 
 export const UserContext = createContext();
 
@@ -20,11 +21,18 @@ export const UserContextProvider = ({children}) => {
     useEffect(() => {
         const user = localStorage.getItem('user');
         if(user) {
-            dispatch({type: 'LOGIN', payload: JSON.parse(user)})
+            const decodedUser = JSON.parse(user);
+            const decodedToken = jwtDecode(decodedUser.token);
+            const currentTime = Date.now().valueOf() / 1000;
+
+            if (decodedToken.exp < currentTime) {
+                dispatch({type: 'LOGOUT'});
+            } else {
+                dispatch({type: 'LOGIN', payload: decodedUser});
+            }
         }
     }, [])
 
-    console.log('UserContext State: ',state);
     return (
         <UserContext.Provider value={{...state, dispatch}}>
             {children}

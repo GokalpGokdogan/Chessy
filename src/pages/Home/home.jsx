@@ -24,7 +24,6 @@ const HomePage = () => {
 
     const handleLogout = () => {
         logout()
-        console.log("logout");
     };
 
     const getMovesAsFENs = (chessObj) => {
@@ -70,7 +69,7 @@ const HomePage = () => {
         console.log(game.fen());
         const response = await getAiResponse({fen: game.fen()});
 
-        console.log('Response: ', response);
+        // console.log('Response: ', response);
         const json = JSON.parse(response);
 
         const best_move = json.best_move;

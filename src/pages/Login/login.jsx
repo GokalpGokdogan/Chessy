@@ -10,7 +10,7 @@ const LoginPage = () => {
     const {login, error, isLoading} = useLogin();
     const onSubmit =  async(data) => {
         // data.preventDefault();
-      console.log(data);
+    
       await login(data.mail, data.password);
     };
 
