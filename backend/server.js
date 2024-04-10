@@ -22,6 +22,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use(express.json());
 app.use((req, res, next) => {
+  // res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  // res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   console.log(req.path, req.method);
   next();
 });

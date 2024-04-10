@@ -1,10 +1,38 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Chess } from 'chess.js';
 
 
-const EngineView = ({game, setGame, pgn, setPgn}) => {
+const EngineView = ({game, setGame, pgn, setPgn, bestMove, setBestMove}) => {
     const [msg, setMsg] = useState('');
-    
+    const engineWorker = useRef(null);
 
+    useEffect(() => {
+      engineWorker.current = new Worker('/stockfish.js-master/src/stockfish.js');
+      engineWorker.current.postMessage("uci");
+      engineWorker.current.postMessage("ucinewgame");
+      engineWorker.current.postMessage("position fen " + game.fen());
+      engineWorker.current.postMessage("go depth 10");
+      engineWorker.current.onmessage = (event) => {
+        const message = event.data;
+        // console.log(message);
+        if(message.startsWith("bestmove")) {
+          const bestMove = message.split(" ")[1];
+          const newGame = new Chess();
+          newGame.load(game.fen()); // Load the current game state from a FEN string
+          newGame.move({
+            from: bestMove.substring(0, 2),
+            to: bestMove.substring(2, 4)
+          });
+          const newPgn = newGame.pgn(); // Get the new PGN after the move
+          // console.log(newPgn); // Log the new PGN
+          let recommendedMove = newPgn.split(" ")[newPgn.split(" ").length-1];
+          // console.log(recommendedMove); // Log the result of the game
+          setMsg(recommendedMove);
+          setBestMove(recommendedMove);
+        }
+      };
+    }, [game]);
+    
     // useEffect(() => {
         
     //     let engine = new Worker('../../node_modules/stockfish/src/stockfish-nnue-16.js');
@@ -108,7 +136,7 @@ const EngineView = ({game, setGame, pgn, setPgn}) => {
 
     return (
         <div>
-            <p>Engine: {msg}</p>
+            <p className="text-white-A700">Engine: {msg}</p>
         </div>
     );
 }

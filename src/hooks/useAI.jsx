@@ -5,13 +5,15 @@
 
 export const useAI = () => {
     // const [responded, setResponded] = useState('Waiting for response...');
-    const getAiResponse = async ({fen}) => {
+    const getAiResponse = async ({fen, bestMove}) => {
         // console.log('FEN: ', fen);
-        let promptBody = "Given the FEN position " +
-                        fen + 
-                        ", explain the best move. Provide a brief and informative explanation of the strategic advantages it offers."+
-                        "Check your answer for accuracy by consulting a chess engine.";
+        // let promptBody = "Given the FEN position " +
+        //                 fen + 
+        //                 ", explain the best move. Provide a brief and informative explanation of the strategic advantages it offers."+
+        //                 "Check your answer for accuracy by consulting a chess engine.";
 
+        let promptBody = "Given the FEN position " + fen + ", best move is " + 
+                        bestMove + ", explain the best move. Provide a brief and informative explanation of the strategic advantages it offers."
 
         // console.log('Prompt: ', promptBody);
         // const response = await axios.post('/api/ai/ask', {promptBody});

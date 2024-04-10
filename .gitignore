@@ -25,3 +25,6 @@ dist-ssr
 
 #added by me
 .env
+emsdk
+stockfish
+stockfish.js-master
