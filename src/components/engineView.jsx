@@ -136,7 +136,7 @@ const EngineView = ({game, setGame, pgn, setPgn, bestMove, setBestMove}) => {
 
     return (
         <div>
-            <p className="text-white-A700">Engine: {msg}</p>
+            {/* <p className="text-white-A700">Engine: {msg}</p> */}
         </div>
     );
 }
