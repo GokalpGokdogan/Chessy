@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
 // import { useForm } from "react-hook-form";
 // import ImageCropper from "../../components/imgCropper";
-import { useLogout } from "../../hooks/UseLogout";
+import { useLogout } from "../../hooks/useLogout";
 import ChessBoard from "../../components/chessBoard";
 import { Chess } from "chess.js";
-import { useAI } from "../../hooks/UseAI";
+import { useAI } from "../../hooks/useAI";
 // import AiResponse from "../../components/aiResponse";
 import EngineView from "../../components/engineView";
 
