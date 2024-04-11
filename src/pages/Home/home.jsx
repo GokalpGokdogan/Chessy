@@ -199,10 +199,6 @@ const HomePage = () => {
                         </div>
                         {!moveError && (<div className="flex flex-col mt-[5%] w-full justify-center items-center my-10 font-semibold mx-auto">
                             <ChessBoard game={game} setGame={setGame} pgn={pgn} setPgn={setPgn} />
-                            <EngineView game={game} setGame={setGame} pgn={pgn} setPgn={setPgn} bestMove={bestMove} setBestMove={setBestMove} />
-                            <div>
-                                <p className="text-white-A700">Engine: {bestMove}</p>
-                            </div>
                             </div>)}
                         {moveError && (<div className="flex flex-col mt-[5%] h-full md:w-full lg:w-5/6 justify-center items-center mb-[50%] font-semibold mx-auto">
                             <p className="text-3xl md:text-2xl text-black-900 text-shadow-ts text-white-A700">
