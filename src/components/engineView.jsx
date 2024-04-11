@@ -7,7 +7,7 @@ const EngineView = ({game, setGame, pgn, setPgn, bestMove, setBestMove}) => {
     const engineWorker = useRef(null);
 
     useEffect(() => {
-      engineWorker.current = new Worker('/stockfish.js-master/src/stockfish.js');
+      engineWorker.current = new Worker("/stockfish.js");
       engineWorker.current.postMessage("uci");
       engineWorker.current.postMessage("ucinewgame");
       engineWorker.current.postMessage("position fen " + game.fen());
@@ -136,7 +136,7 @@ const EngineView = ({game, setGame, pgn, setPgn, bestMove, setBestMove}) => {
 
     return (
         <div>
-            <p className="text-white-A700">Engine: {msg}</p>
+            {/* <p className="text-white-A700">Engine: {msg}</p> */}
         </div>
     );
 }
