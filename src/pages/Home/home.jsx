@@ -4,7 +4,7 @@ import React, {useState, useEffect} from "react";
 import { useLogout } from "../../hooks/useLogout";
 import ChessBoard from "../../components/chessBoard";
 import { Chess } from "chess.js";
-import { useAI } from "../../hooks/UseAI";
+import { useAI } from "../../hooks/useAI";
 // import AiResponse from "../../components/aiResponse";
 import EngineView from "../../components/engineView";
 
