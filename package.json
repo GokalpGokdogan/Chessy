@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "backend": "cd backend && nodemon server.js",
-    "start": "concurrently \"npm run dev\" \"npm run backend\" \"npx open-cli http://localhost:5173\""
+    "backend": "cd backend && node server.js", 
+    "start": "concurrently \"npm run dev\" \"npm run backend\""
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
