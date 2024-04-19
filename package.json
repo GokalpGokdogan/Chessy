@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "backend": "cd backend && node server.js",
     "starter": "concurrently \"npm run dev\" \"npm run backend\"",
-    "start": "npm run dev & npm run backend"
+    "start": "npm i & npm run dev & npm run backend"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
